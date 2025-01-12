@@ -1,0 +1,15 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Equipament {
+  id        String   @id @default(uuid())
+  series    String
+  model     String
+  mark      String
+  status    Int?
+  createdAt DateTime @default(now())
+
+  @@map("equipaments")
+}
