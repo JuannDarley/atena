@@ -1,0 +1,31 @@
+{
+  "name": "atena",
+  "version": "1.0.0",
+  "description": "Prevent equipaments",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "lint": "prettier . --write && eslint --fix ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "main"
+  },
+  "author": "Juan Darley",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "fastify": "^5.2.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.18.0",
+    "@types/node": "^22.10.5",
+    "eslint": "^9.18.0",
+    "eslint-config-prettier": "^9.1.0",
+    "globals": "^15.14.0",
+    "prettier": "3.4.2",
+    "tsc": "^2.0.4",
+    "tsx": "^4.19.2",
+    "typescript-eslint": "^8.19.1"
+  }
+}
