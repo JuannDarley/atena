@@ -2,7 +2,7 @@ Preventiva de equipamentos
 #############################
 
 #RNF
-[ ] Utilizar fastify para cirar as rotas de usuários e equipamentos.
+[X] Utilizar fastify para cirar as rotas de equipamentos.
 [ ] Procurar uma forma de enviar e-mails sem ser pago.
 [ ] Utilizar o forms para facilitar a forma de preenchimento.
 [ ] Procurar um contador que notifique a cada 1 semana/mês.
