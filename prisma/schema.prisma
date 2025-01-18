@@ -1,3 +1,7 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
   provider = "sqlite"
   url      = env("DATABASE_URL")
@@ -10,6 +14,4 @@ model Equipament {
   mark      String
   status    Int?
   createdAt DateTime @default(now())
-
-  @@map("equipaments")
 }
