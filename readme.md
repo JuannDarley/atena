@@ -16,7 +16,7 @@ Preventiva de equipamentos
 
 #RN
 
-[ ] Quando atualizar/realziar a preventiva, a data sera incluida automaticamente.
+[X] Quando atualizar/realziar a preventiva, a data sera incluida automaticamente.
 [ ] Deve ser possível identificar o usuário que atualizou/realizou a preventiva.
 [ ] O equipamento que estiver a muito tempo em manutenção entrara em estado inativo para preventivas.
 [ ] Será enviado email semanalmente/mensalmente para o cliente para avisar as preventivas.

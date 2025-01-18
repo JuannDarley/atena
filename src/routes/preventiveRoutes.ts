@@ -65,24 +65,47 @@ export async function preventiveRoutes(app: FastifyInstance) {
 
 	app.put('/preventives/:id', async (request) => {
 		const paramsSchema = z.object({
+			id: z.string().uuid(),
+		})
+
+		const { id } = paramsSchema.parse(request.params)
+		const bodySchema = z.object({
 			equipament_hours: z.number(),
 			preventive_HUB: z.coerce.boolean().default(false),
 			type: z.string().toUpperCase(),
 			status: z.string().toUpperCase(),
 		})
 
-		const { equipament_hours, preventive_HUB, type, status } =
-			paramsSchema.parse(request.params)
-
-		const {} = bodySchema.parse(request.body)
+		const { equipament_hours, preventive_HUB, type, status } = bodySchema.parse(
+			request.body,
+		)
 
 		const preventive = await prisma.preventive.update({
 			where: {
 				id,
 			},
-			data: {},
+			data: {
+				equipament_hours,
+				preventive_HUB,
+				type,
+				status,
+			},
 		})
 
 		return preventive
+	})
+
+	app.delete('/preventives/:id', async (request) => {
+		const paramsSchema = z.object({
+			id: z.string().uuid(),
+		})
+
+		const { id } = paramsSchema.parse(request.params)
+
+		await prisma.preventive.delete({
+			where: {
+				id,
+			},
+		})
 	})
 }
