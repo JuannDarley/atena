@@ -9,7 +9,7 @@ datasource db {
 
 model Equipament {
   id        String   @id @default(uuid())
-  series    String
+  series    String   @unique
   model     String
   mark      String
   status    Int?
@@ -19,12 +19,13 @@ model Equipament {
 }
 
 model User {
-  id       String  @id @default(uuid())
+  id       String @id @default(uuid())
   name     String
-  login    String?
-  senha    String?
-  email    String
+  login    String @unique
+  senha    String
+  email    String @unique
   position String
+  token    String @unique
 }
 
 model Preventive {

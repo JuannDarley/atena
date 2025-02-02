@@ -38,9 +38,10 @@ export async function usersRoutes(app: FastifyInstance) {
 			senha: z.string(),
 			email: z.string(),
 			position: z.string().toUpperCase(),
+			token: z.string(),
 		})
 
-		const { name, login, senha, email, position } = bodySchema.parse(
+		const { name, login, senha, email, position, token } = bodySchema.parse(
 			request.body,
 		)
 
@@ -51,6 +52,7 @@ export async function usersRoutes(app: FastifyInstance) {
 				senha,
 				email,
 				position,
+				token,
 			},
 		})
 
