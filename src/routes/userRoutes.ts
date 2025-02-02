@@ -30,4 +30,77 @@ export async function usersRoutes(app: FastifyInstance) {
 
 		return users
 	})
+
+	app.post('/users', async (request) => {
+		const bodySchema = z.object({
+			name: z.string(),
+			login: z.string(),
+			senha: z.string(),
+			email: z.string(),
+			position: z.string().toUpperCase(),
+		})
+
+		const { name, login, senha, email, position } = bodySchema.parse(
+			request.body,
+		)
+
+		const user = await prisma.user.create({
+			data: {
+				name,
+				login,
+				senha,
+				email,
+				position,
+			},
+		})
+
+		return user
+	})
+	app.put('/users/:id', async (request) => {
+		const paramsSchema = z.object({
+			id: z.string().uuid(),
+		})
+
+		const { id } = paramsSchema.parse(request.params)
+
+		const bodySchema = z.object({
+			name: z.string(),
+			login: z.string(),
+			senha: z.string(),
+			email: z.string(),
+			position: z.string().toUpperCase(),
+		})
+
+		const { name, login, senha, email, position } = bodySchema.parse(
+			request.body,
+		)
+
+		const user = await prisma.user.update({
+			where: {
+				id,
+			},
+			data: {
+				name,
+				login,
+				senha,
+				email,
+				position,
+			},
+		})
+
+		return user
+	})
+	app.delete('/users/:id', async (request) => {
+		const paramsSchema = z.object({
+			id: z.string().uuid(),
+		})
+
+		const { id } = paramsSchema.parse(request.params)
+
+		await prisma.user.delete({
+			where: {
+				id,
+			},
+		})
+	})
 }

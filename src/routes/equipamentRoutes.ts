@@ -63,6 +63,7 @@ export async function equipamentRoutes(app: FastifyInstance) {
 		})
 
 		const { id } = paramsSchema.parse(request.params)
+
 		const bodySchema = z.object({
 			series: z.string(),
 			model: z.string().toUpperCase(),
