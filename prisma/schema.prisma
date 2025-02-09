@@ -19,13 +19,13 @@ model Equipament {
 }
 
 model User {
-  id       String @id @default(uuid())
+  id       String  @id @default(uuid())
   name     String
-  login    String @unique
+  login    String  @unique
   senha    String
-  email    String @unique
+  email    String  @unique
   position String
-  token    String @unique
+  token    String? @unique
 }
 
 model Preventive {

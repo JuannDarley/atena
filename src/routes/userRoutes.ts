@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { prisma } from '../lib/prisma'
 import bcrypt from 'bcrypt'
 import { AuthMiddlewares } from '../middlewares/auth'
+import { sign } from 'jsonwebtoken'
 
 export async function usersRoutes(app: FastifyInstance) {
 	app.get(
@@ -47,41 +48,41 @@ export async function usersRoutes(app: FastifyInstance) {
 		},
 	)
 
-	app.post(
-		'/users',
-		{
-			preHandler: [AuthMiddlewares],
-		},
-		async (request) => {
-			const bodySchema = z.object({
-				name: z.string(),
-				login: z.string(),
-				senha: z.string(),
-				email: z.string(),
-				position: z.string().toUpperCase(),
-				token: z.string(),
-			})
+	app.post('/users', async (request) => {
+		const bodySchema = z.object({
+			name: z.string(),
+			login: z.string(),
+			senha: z.string(),
+			email: z.string(),
+			position: z.string().toUpperCase(),
+		})
 
-			const { name, login, senha, email, position, token } = bodySchema.parse(
-				request.body,
-			)
+		const { name, login, senha, email, position } = bodySchema.parse(
+			request.body,
+		)
 
-			const hashPassword = await bcrypt.hash(senha, 8)
+		const hashPassword = await bcrypt.hash(senha, 8)
 
-			const user = await prisma.user.create({
-				data: {
-					name,
-					login,
-					senha: hashPassword,
-					email,
-					position,
-					token,
-				},
-			})
-
-			return user
-		},
-	)
+		const user = await prisma.user.create({
+			data: {
+				name,
+				login,
+				senha: hashPassword,
+				email,
+				position,
+			},
+		})
+		const token = sign({ id: user.id }, 'secret', { expiresIn: '1d' })
+		await prisma.user.update({
+			where: {
+				id: user.id,
+			},
+			data: {
+				token,
+			},
+		})
+		return { name, login, senha, email, position }
+	})
 	app.put(
 		'/users/:id',
 		{
