@@ -1,13 +1,13 @@
 import type { FastifyInstance } from 'fastify'
 import { z } from 'zod'
 import { prisma } from '../lib/prisma'
-import { AuthMiddlewares } from '../middlewares/auth'
+import { AuthMiddlewaresAdm } from '../middlewares/authAdm'
 
 export async function equipamentRoutes(app: FastifyInstance) {
 	app.get(
 		'/equipaments',
 		{
-			preHandler: [AuthMiddlewares],
+			preHandler: [AuthMiddlewaresAdm],
 		},
 		async () => {
 			const equipaments = await prisma.equipament.findMany({
@@ -29,7 +29,7 @@ export async function equipamentRoutes(app: FastifyInstance) {
 	app.get(
 		'/equipaments/:id',
 		{
-			preHandler: [AuthMiddlewares],
+			preHandler: [AuthMiddlewaresAdm],
 		},
 		async (request) => {
 			const paramsSchema = z.object({
@@ -51,7 +51,7 @@ export async function equipamentRoutes(app: FastifyInstance) {
 	app.post(
 		'/equipaments',
 		{
-			preHandler: [AuthMiddlewares],
+			preHandler: [AuthMiddlewaresAdm],
 		},
 		async (request) => {
 			const bodySchema = z.object({
@@ -79,7 +79,7 @@ export async function equipamentRoutes(app: FastifyInstance) {
 	app.put(
 		'/equipaments/:id',
 		{
-			preHandler: [AuthMiddlewares],
+			preHandler: [AuthMiddlewaresAdm],
 		},
 		async (request) => {
 			const paramsSchema = z.object({
@@ -116,7 +116,7 @@ export async function equipamentRoutes(app: FastifyInstance) {
 	app.delete(
 		'/equipaments/:id',
 		{
-			preHandler: [AuthMiddlewares],
+			preHandler: [AuthMiddlewaresAdm],
 		},
 		async (request) => {
 			const paramsSchema = z.object({

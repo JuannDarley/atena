@@ -1,13 +1,13 @@
 import type { FastifyInstance } from 'fastify'
 import { z } from 'zod'
 import { prisma } from '../lib/prisma'
-import { AuthMiddlewares } from '../middlewares/auth'
+import { AuthMiddlewaresTec } from '../middlewares/authTec'
 
 export async function preventiveRoutes(app: FastifyInstance) {
 	app.get(
 		'/preventives',
 		{
-			preHandler: [AuthMiddlewares],
+			preHandler: [AuthMiddlewaresTec],
 		},
 		async () => {
 			const preventives = await prisma.preventive.findMany({
@@ -31,7 +31,7 @@ export async function preventiveRoutes(app: FastifyInstance) {
 	app.get(
 		'/preventives/:id',
 		{
-			preHandler: [AuthMiddlewares],
+			preHandler: [AuthMiddlewaresTec],
 		},
 		async (request) => {
 			const paramsSchema = z.object({
@@ -53,7 +53,7 @@ export async function preventiveRoutes(app: FastifyInstance) {
 	app.post(
 		'/preventives',
 		{
-			preHandler: [AuthMiddlewares],
+			preHandler: [AuthMiddlewaresTec],
 		},
 		async (request) => {
 			const bodySchema = z.object({
@@ -84,7 +84,7 @@ export async function preventiveRoutes(app: FastifyInstance) {
 	app.put(
 		'/preventives/:id',
 		{
-			preHandler: [AuthMiddlewares],
+			preHandler: [AuthMiddlewaresTec],
 		},
 		async (request) => {
 			const paramsSchema = z.object({
@@ -121,7 +121,7 @@ export async function preventiveRoutes(app: FastifyInstance) {
 	app.delete(
 		'/preventives/:id',
 		{
-			preHandler: [AuthMiddlewares],
+			preHandler: [AuthMiddlewaresTec],
 		},
 		async (request) => {
 			const paramsSchema = z.object({

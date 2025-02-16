@@ -1,5 +1,7 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { verify } from 'jsonwebtoken'
+import * as dotenv from 'dotenv'
+dotenv.config()
 
 type TokenPayload = {
 	id: string
@@ -7,7 +9,7 @@ type TokenPayload = {
 	exp: number
 }
 
-export async function AuthMiddlewares(
+export async function AuthMiddlewaresTec(
 	request: FastifyRequest,
 	reply: FastifyReply,
 ) {
@@ -19,8 +21,10 @@ export async function AuthMiddlewares(
 
 	const [, token] = authorization.split(' ')
 
+	let secretKeys: string = process.env.SECRET_KEYS_TWO || 'teste'
+
 	try {
-		const decoded = verify(token, 'secret') as TokenPayload
+		const decoded = verify(token, secretKeys) as TokenPayload
 		const { id } = decoded
 		request.userId = id
 	} catch (error) {

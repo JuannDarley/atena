@@ -2,18 +2,16 @@ import type { FastifyInstance } from 'fastify'
 import { z } from 'zod'
 import { prisma } from '../lib/prisma'
 import bcrypt from 'bcrypt'
-import { AuthMiddlewares } from '../middlewares/auth'
+import { AuthMiddlewaresAdm } from '../middlewares/authAdm'
 import { sign } from 'jsonwebtoken'
 
 export async function usersRoutes(app: FastifyInstance) {
 	app.get(
 		'/users',
 		{
-			preHandler: [AuthMiddlewares],
+			preHandler: [AuthMiddlewaresAdm],
 		},
 		async () => {
-			console.log('passou')
-
 			const users = await prisma.user.findMany()
 
 			return users.map((users) => {
@@ -29,7 +27,7 @@ export async function usersRoutes(app: FastifyInstance) {
 	app.get(
 		'/users/:id',
 		{
-			preHandler: [AuthMiddlewares],
+			preHandler: [AuthMiddlewaresAdm],
 		},
 		async (request) => {
 			const paramsSchema = z.object({
@@ -73,20 +71,13 @@ export async function usersRoutes(app: FastifyInstance) {
 			},
 		})
 		const token = sign({ id: user.id }, 'secret', { expiresIn: '1d' })
-		await prisma.user.update({
-			where: {
-				id: user.id,
-			},
-			data: {
-				token,
-			},
-		})
-		return { name, login, senha, email, position }
+
+		return { name, login, senha, email, position, token }
 	})
 	app.put(
 		'/users/:id',
 		{
-			preHandler: [AuthMiddlewares],
+			preHandler: [AuthMiddlewaresAdm],
 		},
 		async (request) => {
 			const paramsSchema = z.object({
@@ -126,7 +117,7 @@ export async function usersRoutes(app: FastifyInstance) {
 	app.delete(
 		'/users/:id',
 		{
-			preHandler: [AuthMiddlewares],
+			preHandler: [AuthMiddlewaresAdm],
 		},
 		async (request) => {
 			const paramsSchema = z.object({
