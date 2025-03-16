@@ -11,5 +11,5 @@ export async function deleteUser({ id }: DeleteUserParams) {
 		},
 	})
 
-	return { return: 'User deleted' }
+	return
 }

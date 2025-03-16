@@ -1,7 +1,10 @@
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
 import { z } from 'zod'
+import { deleteUser } from '../functions/crudUser/delete-user'
 import { getAllUsers } from '../functions/crudUser/get-all-users'
+import { getUser } from '../functions/crudUser/get-user'
 import { registerToUser } from '../functions/crudUser/register-to-users'
+import { updateToUser } from '../functions/crudUser/update-to-user'
 
 export const usersRoutes: FastifyPluginAsyncZod = async (app) => {
 	app.get(
@@ -22,7 +25,6 @@ export const usersRoutes: FastifyPluginAsyncZod = async (app) => {
 					}),
 				},
 			},
-			//preHandler: [AuthMiddlewaresAdm],
 		},
 
 		async () => {
@@ -39,26 +41,47 @@ export const usersRoutes: FastifyPluginAsyncZod = async (app) => {
 			return { users: allUser }
 		},
 	)
-
-	/*app.get(
-		'/users/:id',
+	app.get(
+		'/user/:id',
 		{
-			//preHandler: [AuthMiddlewaresAdm],
+			schema: {
+				description: 'Get a user by id',
+				tags: ['Users'],
+				summary: 'Get user by id',
+				params: z.object({
+					id: z.string(),
+				}),
+
+				response: {
+					200: z.object({
+						id: z.string(),
+						name: z.string(),
+						senha: z.string(),
+						login: z.string(),
+						email: z.string(),
+						position: z.string(),
+					}),
+				},
+			},
 		},
-		async (request) => {
-			const paramsSchema = z.object({
-				id: z.string().uuid(),
+
+		async (request, reply) => {
+			const { id } = request.params
+
+			const { name, login, senha, email, position } = await getUser({ id })
+
+			return reply.status(200).send({
+				id,
+				name,
+				login,
+				senha,
+				email,
+				position,
 			})
-
-			const { id } = paramsSchema.parse(request.params)
-
-			const user = await getUser({ id })
-			return user
 		},
-	)*/
-
+	)
 	app.post(
-		'/users',
+		'/register',
 		{
 			schema: {
 				summary: 'Register a new user',
@@ -101,29 +124,37 @@ export const usersRoutes: FastifyPluginAsyncZod = async (app) => {
 			})
 		},
 	)
-	/*app.put(
-		'/users/:id',
+	app.put(
+		'/updateuser/:id',
 		{
-			preHandler: [AuthMiddlewaresAdm],
+			schema: {
+				summary: 'Update a user exists',
+				tags: ['Users'],
+				params: z.object({
+					id: z.string(),
+				}),
+				body: z.object({
+					name: z.string(),
+					login: z.string(),
+					senha: z.string(),
+					email: z.string(),
+					position: z.string().toUpperCase(),
+				}),
+				reponse: {
+					201: z.object({
+						id: z.string(),
+						name: z.string(),
+						login: z.string(),
+						email: z.string(),
+						position: z.string().toUpperCase(),
+					}),
+				},
+			},
 		},
 		async (request) => {
-			const paramsSchema = z.object({
-				id: z.string().uuid(),
-			})
+			const { id } = request.params
 
-			const { id } = paramsSchema.parse(request.params)
-
-			const bodySchema = z.object({
-				name: z.string(),
-				login: z.string(),
-				senha: z.string(),
-				email: z.string(),
-				position: z.string().toUpperCase(),
-			})
-
-			const { name, login, senha, email, position } = bodySchema.parse(
-				request.body,
-			)
+			const { name, login, senha, email, position } = request.body
 
 			const user = await updateToUser({
 				id,
@@ -144,9 +175,17 @@ export const usersRoutes: FastifyPluginAsyncZod = async (app) => {
 		},
 	)
 	app.delete(
-		'/users/:id',
+		'/deleteuser/:id',
 		{
-			preHandler: [AuthMiddlewaresAdm],
+			schema: {
+				summary: 'Delete user by id',
+				tags: ['Users'],
+				response: {
+					200: z.object({
+						Ok: z.string(),
+					}),
+				},
+			},
 		},
 		async (request) => {
 			const paramsSchema = z.object({
@@ -155,9 +194,9 @@ export const usersRoutes: FastifyPluginAsyncZod = async (app) => {
 
 			const { id } = paramsSchema.parse(request.params)
 
-			const userDeleted = await deleteUser({ id })
+			await deleteUser({ id })
 
-			return userDeleted
+			return { Ok: 'deletado' }
 		},
-	)*/
+	)
 }

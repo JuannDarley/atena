@@ -3,6 +3,7 @@ import { fastifySwagger } from '@fastify/swagger'
 import { fastifySwaggerUi } from '@fastify/swagger-ui'
 import { fastify } from 'fastify'
 import {
+	jsonSchemaTransform,
 	serializerCompiler,
 	validatorCompiler,
 } from 'fastify-type-provider-zod'
@@ -20,10 +21,11 @@ app.register(fastifyCors, {
 app.register(fastifySwagger, {
 	openapi: {
 		info: {
-			title: 'Manutence Equipament API',
-			version: '0.0.1',
+			title: 'API for preventive measures and equipment registration',
+			version: '1.0.0',
 		},
 	},
+	transform: jsonSchemaTransform,
 })
 
 app.register(fastifySwaggerUi, {
