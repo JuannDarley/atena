@@ -1,9 +1,9 @@
+import bcrypt from 'bcrypt'
 import type { FastifyInstance } from 'fastify'
+import { sign } from 'jsonwebtoken'
 import { z } from 'zod'
 import { prisma } from '../lib/prisma'
-import bcrypt from 'bcrypt'
 import { AuthMiddlewaresAdm } from '../middlewares/authAdm'
-import { sign } from 'jsonwebtoken'
 
 export async function usersRoutes(app: FastifyInstance) {
 	app.get(
