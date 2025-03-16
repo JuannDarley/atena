@@ -1,7 +1,6 @@
 import type { FastifyReply, FastifyRequest } from 'fastify'
 import { verify } from 'jsonwebtoken'
-import * as dotenv from 'dotenv'
-dotenv.config()
+import { env } from '../env'
 
 type TokenPayload = {
 	id: string
@@ -21,7 +20,7 @@ export async function AuthMiddlewaresAdm(
 
 	const [, token] = authorization.split(' ')
 
-	let secretKeys: string = process.env.SECRET_KEYS_ONE || 'teste'
+	let secretKeys: string = env.SECRET_KEYS_ONE
 
 	try {
 		const decoded = verify(token, secretKeys) as TokenPayload
